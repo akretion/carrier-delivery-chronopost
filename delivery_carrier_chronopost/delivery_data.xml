@@ -2,13 +2,70 @@
 <openerp>
   <data noupdate="1">
 
+    <!-- DELIVERY METHODS -->
+    <record id="chrono_8" model="delivery.carrier">
+      <field name="name">Chrono 8</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
+    <record id="chrono_9" model="delivery.carrier">
+      <field name="name">Chrono 9</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
+    <record id="chrono_10" model="delivery.carrier">
+      <field name="name">Chrono 10</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
+    <record id="chrono_13" model="delivery.carrier">
+      <field name="name">Chrono 13</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
+    <record id="chrono_18" model="delivery.carrier">
+      <field name="name">Chrono 18</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
+    <record id="chrono_express" model="delivery.carrier">
+      <field name="name">Chrono Express</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
+    <record id="chrono_classic" model="delivery.carrier">
+      <field name="name">Chrono Classic</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
+    <record id="chrono_relais" model="delivery.carrier">
+      <field name="name">Chrono Relais</field>
+      <field name="type">chronopost</field>
+      <field name="partner_id" ref="chronopost_partner"></field>
+      <field name="product_id" ref="chronopost_product"></field>
+    </record>
+
 
     <!-- OPTIONS -->
     <!-- Insurance -->
     <record id="chronopost_insurance" model="delivery.carrier.template.option">
       <field name="name">Get insurance</field>
       <field name="code">INS</field>
-      <field name="partner_id" ref="chronopost"></field>
+      <field name="partner_id" ref="chronopost_partner"></field>
       <field name="chronopost_type">insurance</field>
     </record>
 
@@ -16,7 +73,7 @@
     <record id="chronopost_service_monday" model="delivery.carrier.template.option">
       <field name="name">Delivery on Monday</field>
       <field name="code">1</field>
-      <field name="partner_id" ref="chronopost"></field>
+      <field name="partner_id" ref="chronopost_partner"></field>
       <field name="chronopost_type">service</field>
       <field name="description">Normal delivery if you do not choose this option</field>
     </record>
@@ -24,7 +81,7 @@
     <record id="chronopost_service_saturday" model="delivery.carrier.template.option">
       <field name="name">Delivery on Saturday</field>
       <field name="code">6</field>
-      <field name="partner_id" ref="chronopost"></field>
+      <field name="partner_id" ref="chronopost_partner"></field>
       <field name="chronopost_type">service</field>
       <field name="description">Normal delivery if you do not choose this option</field>
     </record>
@@ -33,7 +90,7 @@
     <record id="chronopost_shipper_alert" model="delivery.carrier.template.option">
       <field name="name">Shipper Pre-alert</field>
       <field name="code">11</field>
-      <field name="partner_id" ref="chronopost"></field>
+      <field name="partner_id" ref="chronopost_partner"></field>
       <field name="chronopost_type">shipper_alert</field>
       <field name="description">Subscription Tracking Shipper (no shipper pre-alert if you do not choose this option)</field>
     </record>
@@ -42,7 +99,7 @@
     <record id="chronopost_recipient_alert" model="delivery.carrier.template.option">
       <field name="name">Recipient Pre-alert</field>
       <field name="code">22</field>
-      <field name="partner_id" ref="chronopost"></field>
+      <field name="partner_id" ref="chronopost_partner"></field>
       <field name="chronopost_type">recipient_alert</field>
       <field name="description">Recipient mail pre-alert (no recipient pre-alert if you do not choose this option)</field>
     </record>
@@ -51,7 +108,7 @@
     <record id="chronopost_object_type" model="delivery.carrier.template.option">
       <field name="name">Documents</field>
       <field name="code">DOC</field>
-      <field name="partner_id" ref="chronopost"></field>
+      <field name="partner_id" ref="chronopost_partner"></field>
       <field name="chronopost_type">object_type</field>
       <field name="description">Will be Merchandise if you do not choose this option</field>
     </record>

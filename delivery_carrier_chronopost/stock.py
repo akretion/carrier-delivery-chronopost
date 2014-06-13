@@ -22,45 +22,13 @@ from operator import attrgetter
 
 from openerp.osv import orm, fields
 from suds.client import Client
-from lib.chronopost import Chronopost
+#from chronopost_api.chronopost import Chronopost
+from chronopost_api.chronopost import Chronopost
 from datetime import datetime
 
-#from postlogistics.web_service import PostlogisticsWebService
-
-CHRONOPOST_FORMATS = [
-    ('PDF', 'PDF'),
-    ('SPD', 'SPD'),
-    ('PPR', 'PPR'),
-    ('THE', 'THE'),
-    ('ZPL', 'ZPL'),
-    ('XML', 'XML')
-]
 
 
-class chronopost_config(orm.Model):
-    _name = 'chronopost.config'
-
-    _columns = {
-        'name' : fields.char('Name', size=64, required=True),
-        'account_num' : fields.char('Account Number', size=8, required=True),
-        'sub_account_num' : fields.char('Sub Account Number', size=3),
-        'password' : fields.char('Password', size=6, required=True),
-        'label_type': fields.selection(
-            CHRONOPOST_FORMATS,
-            string="Label Format"),
-        'use_esd': fields.boolean('Use ESD'),
-    }
-
-
-    def get_chronopost_account(self, cr, uid, chronos, pick, context=None):
-        """
-            If your company use more than one chronopost account, implement
-            your method to return the right one depending of your picking.
-        """
-        return NotImplementedError
-
-
-class chronopost_prepare_webservice(orm.Model):
+class ChronopostPrepareWebservice(orm.Model):
     _name = 'chronopost.prepare.webservice'
 
 
@@ -124,8 +92,8 @@ class chronopost_prepare_webservice(orm.Model):
 
     def _prepare_basic_ref(self, cr, uid, picking, context=None):
         ref_data = {
-            'shipperRef': "Ref Shipper", #FIXME
-            'recipientRef': "Ref Recipient", #FIXME  Code point relais si chrono relais
+            'shipperRef': picking.name,
+            #'recipientRef': "Ref Recipient", #TODO Code point relais si chrono relais
         }
         return ref_data
 
@@ -142,12 +110,10 @@ class chronopost_prepare_webservice(orm.Model):
         picking = moves[0].picking_id
         res['weight'] = sum(move.weight for move in moves)
         product_total = int(sum(m.sale_line_id.price_subtotal if m.sale_line_id else 0 for m in moves) * 100)
-        print "????????????????", product_total
         if self._get_single_option(picking, 'insurance'):
             res['insuredValue'] = product_total or None
         if picking.carrier_id.name == "Chrono Express":
             res['customsValue'] = product_total or None
-        print context, "**"
         return res
 
 
@@ -167,6 +133,7 @@ class chronopost_prepare_webservice(orm.Model):
 
 
     def _prepare_esd(self, cr, uid, track, context=None):
+        #TODO
         esd_data = {
             'height': 0,
             'width': 0,
@@ -176,13 +143,34 @@ class chronopost_prepare_webservice(orm.Model):
 
 
     def _prepare_account(self, cr, uid, chrono_config, picking, context=None):
+        if context is None:
+            context = {}
+        if chrono_config.is_sub_account:
+            account = chrono_config.parent_id.account_num
+            sub_account = chrono_config.account_num
+            password = chrono_config.parent_id.password
+            mode = chrono_config.parent_id.label_type
+            name = chrono_config.parent_id.name
+        else:
+            account = chrono_config.account_num
+            password = chrono_config.password
+            mode = chrono_config.label_type
+            name = chrono_config.name
+            sub_account = False
         header_data =   {
-            'accountNumber': chrono_config.account_num,
-            'subAccount': chrono_config.sub_account_num or False,
+            'accountNumber': account,
+            'subAccount': sub_account,
         }
-        password = chrono_config.password
-        mode = chrono_config.label_type
+        context['chrono_account_name'] = name
         return header_data, password, mode
+
+
+    def get_chronopost_account(self, cr, uid, company, pick, context=None):
+        """
+            If your company use more than one chronopost account, implement
+            your method to return the right one depending of your picking.
+        """
+        return NotImplementedError
 
 
 
@@ -196,17 +184,15 @@ class stock_picking(orm.Model):
         move_obj = self.pool['stock.move']
         company = picking.company_id
         options = [o.tmpl_option_id.name for o in picking.option_ids]
-        if company.chronopost_ids:
-            if len(company.chronopost_ids) == 1:
-                chrono_config = company.chronopost_ids[0]
+        if company.chronopost_account_ids:
+            if len(company.chronopost_account_ids) == 1:
+                chrono_config = company.chronopost_account_ids[0]
             else:
-                chrono_obj = self.pool['chronopost.config']
-                chrono_config = chrono_obj.get_chronopost_account(
-                                                cr, uid, company.chronopost_ids, 
+                chrono_config = chronopost_obj.get_chronopost_account(
+                                                cr, uid, company, 
                                                 picking, context=context)
         else:
             raise orm.except_orm('Error', 'You have to configurate a chronopost account for your company')
-        context['chrono_account_name'] = chrono_config.account_name
         if tracking_ids is None:
             # get all the trackings of the picking
             # no tracking_id wil return a False, meaning that
@@ -246,13 +232,14 @@ class stock_picking(orm.Model):
                 moves = [move for move in picking.move_lines]
                 skybill_data.update(chronopost_obj._complete_skybill(cr, uid, moves, context=context))
                 #skybill_data['weight'] += sum(move.weight for move in picking.move_lines)
-                print "kk***********fffffffffffff", chronopost_obj._complete_skybill(cr, uid, moves, context=context), "ll", skybill_data
             else:
                 moves = track.move_ids
                 skybill_data.update(chronopost_obj._complete_skybill(cr, uid, moves, context=context))
                 ref_data['customerSkybillNumber'] = track.name
             if chrono_config.use_esd:
                 esd_data = chronopost_obj._prepare_esd(cr, uid, track, context=context)
+            else:
+                esd_data = None
             resp = Chronopost().get_shipping_label(recipient_data, shipper_data,
                                                    header_data, ref_data,
                                                    skybill_data, password,
@@ -319,6 +306,5 @@ class ShippingLabel(orm.Model):
         new_types = [('zpl', 'ZPL')]
         file_types.extend(new_types)
         return file_types
-
 
 

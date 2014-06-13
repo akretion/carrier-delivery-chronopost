@@ -22,19 +22,10 @@
 
 from openerp.osv import orm, fields
 
-CHRONOPOST_FORMATS = [
-    ('PDF', 'PDF'),
-    ('SPD', 'SPD'),
-    ('PPR', 'PPR'),
-    ('THE', 'THE'),
-    ('ZPL', 'ZPL'),
-    ('XML', 'XML')
-]
-
 
 class ResCompany(orm.Model):
     _inherit = 'res.company'
 
     _columns = {
-        'chronopost_ids': fields.many2many('chronopost.config', 'company_chronopost_rel', 'company_id', 'chrono_id', 'Chronopost Accounts'),
+        'chronopost_account_ids': fields.one2many('chronopost.config', 'company_id', 'Chronopost Accounts'),
         }

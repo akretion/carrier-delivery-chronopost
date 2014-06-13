@@ -24,7 +24,9 @@
  'maintainer': 'Akretion',
  'category': 'version',
  'complexity': 'normal',
- 'depends': ['base_delivery_carrier_label'],
+ 'depends': [
+        'base_delivery_carrier_label',
+        'configuration_helper',],
  'description': """
 
 Contributors
@@ -36,7 +38,9 @@ Contributors
  'data': [
     "company_view.xml",
     "res_partner_data.xml",
+    "product_data.xml",
     "delivery_data.xml",
+    "config_view.xml",
           ],
  'tests': [],
  'installable': True,
