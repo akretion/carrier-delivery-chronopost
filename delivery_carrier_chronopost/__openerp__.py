@@ -41,6 +41,7 @@ Contributors
     "product_data.xml",
     "delivery_data.xml",
     "config_view.xml",
+    "stock_view.xml",
           ],
  'tests': [],
  'installable': True,

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+  <data>
+
+    <!-- FORM -->
+    <record id="view_picking_out_chronopost_form" model="ir.ui.view">
+      <field name="name">delivery.stock.picking.out.chronopost.form</field>
+      <field name="model">stock.picking.out</field>
+      <field name="inherit_id" ref="base_delivery_carrier_label.view_picking_out_form"/>
+      <field name="arch" type="xml">
+        <button name="action_generate_carrier_label" position="replace">
+            <button name="action_generate_carrier_label" states="done" string="Create Shipping Label" type="object"/>
+        </button>
+      </field>
+    </record>
+
+    <!-- From DELIVERY module on STOCK.PICKING -->
+    <!-- FORM -->
+    <record id="view_picking_in_chronopost_form" model="ir.ui.view">
+      <field name="name">delivery.stock.picking.in.chronopost.form</field>
+      <field name="model">stock.picking.in</field>
+      <field name="inherit_id" ref="base_delivery_carrier_label.view_picking_in_form"/>
+      <field name="arch" type="xml">
+        <button name="action_generate_carrier_label" position="replace">
+            <button name="action_generate_carrier_label" states="done" string="Create Shipping Label" type="object"/>
+        </button>
+      </field>
+    </record>
+
+  </data>
+</openerp>

@@ -34,7 +34,7 @@ class DeliveryCarrier(orm.Model):
         return res
 
 
-CHRONOPOST_TYPES = [
+CHRONOPOST_OPTIONS_TYPES = [
     ('service', 'Service'),
     ('object_type', 'Type of product'),
     ('insurance', 'Insurance'),
@@ -49,7 +49,7 @@ class DeliveryCarrierTemplateOption(orm.Model):
 
     _columns = {
         'chronopost_type': fields.selection(
-            CHRONOPOST_TYPES,
+            CHRONOPOST_OPTIONS_TYPES,
             string="Chronopost option type"),
     }
 

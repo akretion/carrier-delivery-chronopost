@@ -27,5 +27,5 @@ class ResCompany(orm.Model):
     _inherit = 'res.company'
 
     _columns = {
-        'chronopost_account_ids': fields.one2many('chronopost.config', 'company_id', 'Chronopost Accounts'),
+        'chronopost_account_ids': fields.one2many('chronopost.account', 'company_id', 'Chronopost Accounts'),
         }

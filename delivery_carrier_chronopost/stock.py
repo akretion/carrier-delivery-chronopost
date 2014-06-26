@@ -145,18 +145,12 @@ class ChronopostPrepareWebservice(orm.Model):
     def _prepare_account(self, cr, uid, chrono_config, picking, context=None):
         if context is None:
             context = {}
-        if chrono_config.is_sub_account:
-            account = chrono_config.parent_id.account_num
-            sub_account = chrono_config.account_num
-            password = chrono_config.parent_id.password
-            mode = chrono_config.parent_id.label_type
-            name = chrono_config.parent_id.name
-        else:
-            account = chrono_config.account_num
-            password = chrono_config.password
-            mode = chrono_config.label_type
-            name = chrono_config.name
-            sub_account = False
+        sub_account = chrono_config.sub_account or False
+        account = chrono_config.account_id.account
+        password = chrono_config.account_id.password
+        mode = chrono_config.account_id.file_format or False
+        name = chrono_config.account_id.name
+
         header_data =   {
             'accountNumber': account,
             'subAccount': sub_account,
@@ -273,11 +267,24 @@ class stock_picking(orm.Model):
 
     def generate_shipping_labels(self, cr, uid, ids, tracking_ids=None,
                                  context=None):
-        """ Add label generation for Postlogistics """
+        """ Add label generation for Chronopost """
         if isinstance(ids, (long, int)):
             ids = [ids]
         assert len(ids) == 1
         picking = self.browse(cr, uid, ids[0], context=context)
+        
+        types = {'in': 'stock.picking.in',
+                 'out': 'stock.picking.out',
+                 'internal': 'stock.picking',
+        }
+        res_model = types[picking.type]
+        shipping_label_obj = self.pool.get('shipping.label')
+        labels = shipping_label_obj.search(cr, uid, [
+                                           ('res_id', '=', picking.id),
+                                           ('res_model', '=', res_model)])
+        if labels:
+            raise orm.except_orm('Error', 'You have already print labels for this picking.')
+
         if picking.carrier_id and picking.carrier_id.type == 'chronopost':
             return self._generate_chronopost_label(
                 cr, uid, picking,
