@@ -33,14 +33,14 @@ class ChronopostPrepareWebservice(orm.Model):
 
 
     _CHRONOPOST_PRODUCT = {
-        'Chrono 8': 75,
-        'Chrono 9': 76,
-        'Chrono 10': 02,
-        'Chrono 13': 01,
-        'Chrono 18': 16,
-        'Chrono Express': 17,
-        'Chrono Classic': 44,
-        'Chrono Relais': 86
+        'ch8': 75,
+        'ch9': 76,
+        'ch10': 02,
+        'ch13': 01,
+        'ch18': 16,
+        'chexp': 17,
+        'chcla': 44,
+        'chrel': 86
     }
 
     def _prepare_address(self, cr, uid, partner, context=None):
@@ -108,7 +108,7 @@ class ChronopostPrepareWebservice(orm.Model):
     def _complete_skybill(self, cr, uid, moves, context=None):
         res = {}
         picking = moves[0].picking_id
-        res['weight'] = sum(move.weight for move in moves)
+        res['weight'] = sum(move.weight * move.product_qty for move in moves)
         product_total = int(sum(m.sale_line_id.price_subtotal if m.sale_line_id else 0 for m in moves) * 100)
         if self._get_single_option(picking, 'insurance'):
             res['insuredValue'] = product_total or None
@@ -119,7 +119,7 @@ class ChronopostPrepareWebservice(orm.Model):
 
     def _prepare_basic_skybill(self, cr, uid, picking, options, context=None):
         skybill_data = {
-            'productCode': self._CHRONOPOST_PRODUCT[picking.carrier_id.name],
+            'productCode': self._CHRONOPOST_PRODUCT[picking.carrier_id.code],
             'shipDate': datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f"),
             'shipHour': datetime.now().strftime("%H"),
             'weightUnit': 'KGM',
@@ -207,8 +207,8 @@ class stock_picking(orm.Model):
         recipient_data = chronopost_obj._prepare_recipient(cr, uid, picking, context=context)
         customer_data = chronopost_obj._prepare_customer(cr, uid, picking, context=context)
 
-        shipper_data = chronopost_obj._prepare_shipper(cr, uid, picking, context=context)
         header_data, password, mode = chronopost_obj._prepare_account(cr, uid, chrono_config, picking, context=context)
+        shipper_data = chronopost_obj._prepare_shipper(cr, uid, picking, context=context)
 
         ref_data = chronopost_obj._prepare_basic_ref(cr, uid, picking, context=context)
         skybill_data = chronopost_obj._prepare_basic_skybill(cr, uid, picking, options, context=context)

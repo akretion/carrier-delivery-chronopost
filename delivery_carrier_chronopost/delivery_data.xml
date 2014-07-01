@@ -5,6 +5,7 @@
     <!-- DELIVERY METHODS -->
     <record id="chrono_8" model="delivery.carrier">
       <field name="name">Chrono 8</field>
+      <field name="code">ch8</field>
       <field name="type">chronopost</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
@@ -13,12 +14,14 @@
     <record id="chrono_9" model="delivery.carrier">
       <field name="name">Chrono 9</field>
       <field name="type">chronopost</field>
+      <field name="code">ch9</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
     </record>
 
     <record id="chrono_10" model="delivery.carrier">
       <field name="name">Chrono 10</field>
+      <field name="code">ch10</field>
       <field name="type">chronopost</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
@@ -26,6 +29,7 @@
 
     <record id="chrono_13" model="delivery.carrier">
       <field name="name">Chrono 13</field>
+      <field name="code">ch13</field>
       <field name="type">chronopost</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
@@ -33,6 +37,7 @@
 
     <record id="chrono_18" model="delivery.carrier">
       <field name="name">Chrono 18</field>
+      <field name="code">ch18</field>
       <field name="type">chronopost</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
@@ -40,6 +45,7 @@
 
     <record id="chrono_express" model="delivery.carrier">
       <field name="name">Chrono Express</field>
+      <field name="code">chexp</field>
       <field name="type">chronopost</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
@@ -47,6 +53,7 @@
 
     <record id="chrono_classic" model="delivery.carrier">
       <field name="name">Chrono Classic</field>
+      <field name="code">chcla</field>
       <field name="type">chronopost</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
@@ -54,6 +61,7 @@
 
     <record id="chrono_relais" model="delivery.carrier">
       <field name="name">Chrono Relais</field>
+      <field name="code">chrel</field>
       <field name="type">chronopost</field>
       <field name="partner_id" ref="chronopost_partner"></field>
       <field name="product_id" ref="chronopost_product"></field>
