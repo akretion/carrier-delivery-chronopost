@@ -68,16 +68,18 @@ class ChronopostPrepareWebservice(orm.Model):
         
 
     def _prepare_shipper(self, cr, uid, picking, context=None):
-        partner = picking.company_id.partner_id  #TODO install sale_flow_shop and shop_sender and replace by partner = self._customize_sender_address(cr, uid, pick, context=context) ==> change dependence in openerp.py for sale_flow_shop
+        picking_out_obj = self.pool['stock.picking.out']
+        partner = picking_out_obj._get_label_sender_address(cr, uid, 
+                                                            picking,
+                                                            context=context)
         shipper_data = self._prepare_address(cr, uid, partner, context=context)
-        if partner.is_company and partner.child_ids:
-            shipper_data['name'] = partner.child_ids[0].name
+        if partner.parent_id:
+            shipper_data['name'] = partner.name
+            shipper_data['name2'] = partner.parent_id.name
         else:
             shipper_data['name'] = ' '
+            shipper_data['name2'] = partner.name
         shipper_data['civility'] = 'E' #FIXME
-        shipper_data['name2'] = partner.name
-        print "mmmmmm", self._get_single_option(
-                                      picking, 'shipper_alert'), "kk"
         shipper_data['alert'] = int(self._get_single_option(
                                       picking, 'shipper_alert') or 0)
         return shipper_data
