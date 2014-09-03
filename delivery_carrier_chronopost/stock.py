@@ -110,7 +110,7 @@ class ChronopostPrepareWebservice(orm.Model):
     def _complete_skybill(self, cr, uid, moves, context=None):
         res = {}
         picking = moves[0].picking_id
-        res['weight'] = sum(move.weight * move.product_qty for move in moves)
+        res['weight'] = sum(move.weight for move in moves)
         product_total = int(sum(m.sale_line_id.price_subtotal if m.sale_line_id else 0 for m in moves) * 100)
         if self._get_single_option(picking, 'insurance'):
             res['insuredValue'] = product_total or None

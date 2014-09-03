@@ -33,6 +33,14 @@ class CarrierAccount(orm.Model):
         res.append(('chronopost', 'Chronopost'))
         return res
 
+    def _get_file_format(self, cr, uid, context=None):
+        """ To inherit to add carrier type like Chronopost, Postlogistics..."""
+        res = super(CarrierAccount, self)._get_file_format(cr, uid, context=context)
+        res.extend((('SPD', 'SPD'),
+                   ('PPR', 'PPR'),
+                   ('THE', 'THE')))
+        return res
+
 
 class ChronopostAccount(orm.Model):
     _name = 'chronopost.account'
