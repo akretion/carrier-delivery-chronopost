@@ -33,20 +33,23 @@ class ChronopostPrepareWebservice(orm.Model):
 
 
     _CHRONOPOST_PRODUCT = {
-        'ch8': 75,
-        'ch9': 76,
-        'ch10': 02,
-        'ch13': 01,
-        'ch18': 16,
-        'chexp': 17,
-        'chcla': 44,
-        'chrel': 86
+        'ch8': '75',
+        'ch9': '76',
+        'ch10': '02',
+        'ch13': '01',
+        'ch18': '16',
+        'chexp': '17',
+        'chcla': '44',
+        'chrel': '86'
     }
 
     def _prepare_address(self, cr, uid, partner, context=None):
         address = {}
         for elm in ['street', 'street2', 'zip', 'city', 'phone', 'mobile', 'email']:
-            address[elm] = getattr(partner, elm)
+            if (elm == 'phone' or elm == 'mobile') and getattr(partner, elm):
+                address[elm] = getattr(partner, elm).replace(' ', '')
+            else:
+                address[elm] = getattr(partner, elm)
             if partner.country_id:
                 address['country_code'] = partner.country_id.code
                 address['country_name'] = partner.country_id.name
@@ -243,10 +246,10 @@ class stock_picking(orm.Model):
                                                    customer=customer_data)
                 
             if 'errors' in resp:
-                raise orm.except_orm('Error', '\n'.join(resp['errors']))
+                raise orm.except_orm('Error', ''.join(resp['errors']))
             label = resp['value']
             if label['errorCode'] != 0:
-                raise orm.except_orm('Error', '\n'.join(label['errorMessage']))
+                raise orm.except_orm('Error', ''.join(label['errorMessage']))
 
             #copy tracking number on picking if only one pack or in tracking if several packs
             tracking_number = label['skybillNumber']

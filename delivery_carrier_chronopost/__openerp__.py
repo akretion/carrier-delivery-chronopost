@@ -41,7 +41,6 @@ Contributors
     "product_data.xml",
     "delivery_data.xml",
     "config_view.xml",
-    "stock_view.xml",
     "security/ir.model.access.csv"
           ],
  'tests': [],
