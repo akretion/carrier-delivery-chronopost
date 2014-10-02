@@ -277,18 +277,6 @@ class stock_picking(orm.Model):
             ids = [ids]
         assert len(ids) == 1
         picking = self.browse(cr, uid, ids[0], context=context)
-        
-        types = {'in': 'stock.picking.in',
-                 'out': 'stock.picking.out',
-                 'internal': 'stock.picking',
-        }
-        res_model = types[picking.type]
-        shipping_label_obj = self.pool.get('shipping.label')
-        labels = shipping_label_obj.search(cr, uid, [
-                                           ('res_id', '=', picking.id),
-                                           ('res_model', '=', res_model)])
-        if labels:
-            raise orm.except_orm('Error', 'You have already print labels for this picking.')
 
         if picking.carrier_id and picking.carrier_id.type == 'chronopost':
             return self._generate_chronopost_label(
