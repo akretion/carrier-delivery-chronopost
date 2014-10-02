@@ -25,8 +25,25 @@ from suds.client import Client
 #from chronopost_api.chronopost import Chronopost
 from chronopost_api.chronopost import Chronopost
 from datetime import datetime
+from chronopost_api.exception_helper import (
+    InvalidSize,
+    InvalidType,
+    InvalidValueNotInList,
+    InvalidMissingField,
+    )
 
 
+def map_exception_msg(message):
+    model_mapping = {
+        'skybill': 'Stock Tracking or Carrier',
+        'ref': 'Stock Picking',
+        'esd': 'Carrier Tracking',
+        'address': 'Partner / Customer',
+        'header': 'Chronopost account',
+    }
+    for key, val in model_mapping.items():
+        message = message.replace('(model: ' + key, '\n(check model: ' + val)
+    return message
 
 class ChronopostPrepareWebservice(orm.Model):
     _name = 'chronopost.prepare.webservice'
@@ -239,17 +256,22 @@ class stock_picking(orm.Model):
                 esd_data = chronopost_obj._prepare_esd(cr, uid, track, context=context)
             else:
                 esd_data = None
-            resp = Chronopost().get_shipping_label(recipient_data, shipper_data,
-                                                   header_data, ref_data,
-                                                   skybill_data, password,
-                                                   esd=esd_data, mode=mode,
-                                                   customer=customer_data)
-                
-            if 'errors' in resp:
-                raise orm.except_orm('Error', ''.join(resp['errors']))
+            try:
+                resp = Chronopost().get_shipping_label(
+                                        recipient_data, shipper_data,
+                                        header_data, ref_data,
+                                        skybill_data, password,
+                                        esd=esd_data, mode=mode,
+                                        customer=customer_data)
+            except (InvalidSize,
+                    InvalidType,
+                    InvalidValueNotInList,
+                    InvalidMissingField) as e:
+                msg = map_exception_msg(e.message)
+                raise orm.except_orm('Error', msg)
             label = resp['value']
             if label['errorCode'] != 0:
-                raise orm.except_orm('Error', ''.join(label['errorMessage']))
+                raise orm.except_orm('Webservice Error', ''.join(label['errorMessage']))
 
             #copy tracking number on picking if only one pack or in tracking if several packs
             tracking_number = label['skybillNumber']
