@@ -3,9 +3,16 @@
   <data noupdate="1">
     <record id="chronopost_partner" model="res.partner">
       <field name="name">Chronopost</field>
+      <field name="is_company" eval="True"/>
       <field name="customer" eval="False"/>
-      <field name="supplier" eval="False"/>
+      <field name="supplier" eval="True"/>
+      <field name="street">3 avenue Gallieni</field>
+      <field name="zip">94250</field>
+      <field name="city">Gentilly</field>
+      <field name="country_id" ref="base.fr"/>
       <field name="email">clients.dv@chronopost.fr</field>
+      <field name="website">http://www.chronopost.fr</field>
+      <field name="vat">FR82383960135</field>
     </record>
   </data>
 </openerp>
