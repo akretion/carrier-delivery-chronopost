@@ -29,12 +29,17 @@
         'configuration_helper',
         ],
     'description': """
-With this module, you will be able to generate Chronopost labels directly from Odoo and send it to your label printer in ZPL (or other formats).
+With this module, you will be able to generate Chronopost labels directly via a webservice call and attach the ZPL files (or other formats) on the picking.
+
+This module requires the chronopost_api python lib, available here: https://github.com/florian-dacosta/chronopost
+
+Together with this module, you may be interested by the module *delivery_carrier_zpl_label_print* which adds a button *Print Delivery Labels* on delivery order form view to easily send the ZPL file to your label printer. This module requires the module *base_report_to_printer* with the code of this PR : https://github.com/OCA/report-print-send/pull/44
 
 Contributors
 ------------
 
-* Florian da Costa <florian.dacosta@akretion.com>
+* Florian da Costa <florian.dacosta@akretion.com> (Main author)
+* Alexis de Lattre <alexis.delattre@akretion.com>
 """,
     'website': 'http://www.akretion.com/',
     'data': [
