@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record id="chronopost_partner" model="res.partner">
+      <field name="name">Chronopost</field>
+      <field name="customer" eval="False"/>
+      <field name="supplier" eval="False"/>
+      <field name="email">clients.dv@chronopost.fr</field>
+    </record>
+  </data>
+</openerp>

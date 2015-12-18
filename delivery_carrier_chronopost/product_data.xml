@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+
+    <record id="chronopost_product" model="product.product">
+      <field name="name">Chronopost Shipping</field>
+      <field name="procure_method">make_to_stock</field>
+      <field name="type">service</field>
+    </record>
+
+
+
+  </data>
+</openerp>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+<record id="view_chronopost_config" model="ir.ui.view">
+  <field name="model">chronopost.account</field>
+  <field name="arch" type="xml">
+    <form string="Configure Chronopost account" version="7.0">
+        <group col="4">
+            <field name="account_id" colspan="2"/>
+            <field name="sub_account" colspan="2"/>
+            <field name="company_id" colspan="2"/>
+            <field name="use_esd" colspan="2"/>
+        </group>
+    </form>
+  </field>
+</record>
+
+<record id="view_chronopost_config_account" model="ir.ui.view">
+  <field name="model">chronopost.config</field>
+  <field name="arch" type="xml">
+    <form string="Configure Chronopost accounts" version="7.0"
+          class="oe_form_configuration">
+      <header>
+        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+        or
+        <button string="Cancel" type="object" name="cancel" class="oe_link"/>
+        <h1 style="display: inline-block"> Chronopost</h1>
+      </header>
+
+      <group>
+        <div>
+          <div>
+            <label for="account_ids" string="Chronopost Accounts"/>
+            <field name="account_ids"/>
+          </div>
+        </div>
+      </group>
+    </form>
+  </field>
+</record>
+
+<record id="action_chronopost_config" model="ir.actions.act_window">
+  <field name="type">ir.actions.act_window</field>
+  <field name="res_model">chronopost.config</field>
+  <field name="view_mode">form</field>
+  <field name="target">inline</field>
+</record>
+
+<menuitem id="menu_chronopost_config" name="Chronopost"
+          parent="base_delivery_carrier_label.menu_carriers_config"
+          action="action_chronopost_config"/>
+
+    </data>
+</openerp>
