@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Florian da Costa
-#    Copyright 2013 Akretion
+#    Copyright (C) 2013-2015 Akretion (http://www.akretion.com)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -29,13 +29,15 @@ class CarrierAccount(orm.Model):
 
     def _get_carrier_type(self, cr, uid, context=None):
         """ To inherit to add carrier type like Chronopost, Postlogistics..."""
-        res = super(CarrierAccount, self)._get_carrier_type(cr, uid, context=context)
+        res = super(CarrierAccount, self)._get_carrier_type(
+            cr, uid, context=context)
         res.append(('chronopost', 'Chronopost'))
         return res
 
     def _get_file_format(self, cr, uid, context=None):
         """ To inherit to add carrier type like Chronopost, Postlogistics..."""
-        res = super(CarrierAccount, self)._get_file_format(cr, uid, context=context)
+        res = super(CarrierAccount, self)._get_file_format(
+            cr, uid, context=context)
         res.extend((('SPD', 'SPD'),
                    ('PPR', 'PPR'),
                    ('THE', 'THE')))
@@ -47,8 +49,10 @@ class ChronopostAccount(orm.Model):
     _inherits = {'carrier.account': 'account_id'}
     _rec_name = 'account_id'
     _columns = {
-        'account_id': fields.many2one('carrier.account', 'Main Account'),
-        'sub_account' : fields.char('Sub Account Number', size=3),
+        'account_id': fields.many2one(
+            'carrier.account', 'Main Account',
+            ondelete="cascade", required=True),
+        'sub_account': fields.char('Sub Account Number', size=3),
         'company_id': fields.many2one('res.company', 'Company'),
         'use_esd': fields.boolean('Use ESD'),
     }
@@ -59,6 +63,3 @@ class ChronopostConfig(orm.Model):
     _inherit = ['res.config.settings', 'abstract.config.settings']
     _prefix = 'chronopost_'
     _companyObject = ResCompany
-
-
-

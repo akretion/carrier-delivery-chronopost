@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Florian da Costa
-#    Copyright 2014 Akretion
+#    Copyright 2014-2015 Akretion (http://www.akretion.com)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,37 +18,37 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{'name': 'Chronopost Labels WebService',
- 'version': '1.1',
- 'author': 'Akretion',
- 'maintainer': 'Akretion',
- 'category': 'version',
- 'complexity': 'normal',
- 'depends': [
+
+{
+    'name': 'Chronopost Labels WebService',
+    'version': '7.0.1.1.0',
+    'author': 'Akretion',
+    'category': 'Carrier',
+    'depends': [
         'base_delivery_carrier_label',
-        'configuration_helper',],
- 'description': """
+        'configuration_helper',
+        ],
+    'description': """
+With this module, you will be able to generate Chronopost labels directly from Odoo and send it to your label printer in ZPL (or other formats).
 
 Contributors
 ------------
 
 * Florian da Costa <florian.dacosta@akretion.com>
 """,
- 'website': 'http://www.akretion.com/',
- 'data': [
-    "company_view.xml",
-    "res_partner_data.xml",
-    "product_data.xml",
-    "delivery_data.xml",
-    "config_view.xml",
-    "security/ir.model.access.csv"
-          ],
- 'tests': [],
- 'installable': True,
- 'auto_install': False,
- 'license': 'AGPL-3',
- 'application': True,
- 'external_dependencies': {
-     'python': ['suds'],
- }
- }
+    'website': 'http://www.akretion.com/',
+    'data': [
+        "company_view.xml",
+        "res_partner_data.xml",
+        "product_data.xml",
+        "delivery_data.xml",
+        "config_view.xml",
+        "security/ir.model.access.csv"
+        ],
+    'installable': True,
+    'license': 'AGPL-3',
+    'application': True,
+    'external_dependencies': {
+        'python': ['suds', 'chronopost_api'],
+    }
+}

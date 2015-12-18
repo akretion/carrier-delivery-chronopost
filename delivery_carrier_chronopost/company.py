@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Florian da Costa
-#    Copyright 2013 Akretion
+#    Copyright 2013-2015 Akretion (http://www.akretion.com)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-
 from openerp.osv import orm, fields
 
 
@@ -27,5 +26,6 @@ class ResCompany(orm.Model):
     _inherit = 'res.company'
 
     _columns = {
-        'chronopost_account_ids': fields.one2many('chronopost.account', 'company_id', 'Chronopost Accounts'),
+        'chronopost_account_ids': fields.one2many(
+            'chronopost.account', 'company_id', 'Chronopost Accounts'),
         }

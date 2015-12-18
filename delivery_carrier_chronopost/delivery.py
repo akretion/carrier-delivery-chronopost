@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: florian da Costa
-#    Copyright 2014 Akretion
+#    Author: Florian da Costa
+#    Copyright (C) 2014-2015 Akretion (http://www.akretion.com)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
 
+from openerp.osv import orm, fields
 
 
 class DeliveryCarrier(orm.Model):
@@ -28,8 +28,8 @@ class DeliveryCarrier(orm.Model):
 
     def _get_carrier_type_selection(self, cr, uid, context=None):
         """ Add Chronopost carrier type """
-        res = super(DeliveryCarrier, self
-                    )._get_carrier_type_selection(cr, uid, context=context)
+        res = super(DeliveryCarrier, self)._get_carrier_type_selection(
+            cr, uid, context=context)
         res.append(('chronopost', 'Chronopost'))
         return res
 
@@ -52,7 +52,3 @@ class DeliveryCarrierTemplateOption(orm.Model):
             CHRONOPOST_OPTIONS_TYPES,
             string="Chronopost option type"),
     }
-
-
-
- 
