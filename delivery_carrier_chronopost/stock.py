@@ -44,7 +44,7 @@ def map_exception_msg(message):
     return message
 
 
-class ChronopostPrepareWebservice(orm.Model):
+class ChronopostPrepareWebservice(orm.AbstractModel):
     _name = 'chronopost.prepare.webservice'
 
     _CHRONOPOST_PRODUCT = {

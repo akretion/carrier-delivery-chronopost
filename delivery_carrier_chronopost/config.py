@@ -46,6 +46,7 @@ class CarrierAccount(orm.Model):
 
 class ChronopostAccount(orm.Model):
     _name = 'chronopost.account'
+    _description = 'Chronopost Account'
     _inherits = {'carrier.account': 'account_id'}
     _rec_name = 'account_id'
     _columns = {

@@ -54,6 +54,7 @@ Contributors
     'license': 'AGPL-3',
     'application': True,
     'external_dependencies': {
-        'python': ['suds', 'chronopost_api'],
+        #'python': ['suds', 'chronopost_api'],  # FIXME Unable to upgrade module "delivery_carrier_chronopost" because an external dependency is not met: No module named chronopost_api
+        'python': ['suds'],
     }
 }

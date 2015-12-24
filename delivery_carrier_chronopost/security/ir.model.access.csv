@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_chronopost_account_salesman,chronopost.account.salesman,model_chronopost_account,base.group_sale_salesman,1,0,0,0
+access_chronopost_account_stock_user,Read access on chronopost.account to Stock User,model_chronopost_account,stock.group_stock_user,1,0,0,0
 access_chronopost_account_sale_manager,chronopost.account.sale.manager,model_chronopost_account,base.group_sale_manager,1,1,1,1
