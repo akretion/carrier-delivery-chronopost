@@ -64,6 +64,12 @@ class ChronopostPrepareWebservice(orm.AbstractModel):
         for elm in elms:
             if (elm == 'phone' or elm == 'mobile') and getattr(partner, elm):
                 address[elm] = getattr(partner, elm).replace(' ', '')
+                # We should check this properly, but it seems chronopost
+                # do not consider mobile phone. So if we give just the mobile
+                # and not the phone field, then they do not have any phone
+                # number. In this case, out the mobile in phone field.
+                if elm == 'mobile' and not address.get('phone', False):
+                    address['phone'] = getattr(partner, elm).replace(' ', '')
             else:
                 address[elm] = getattr(partner, elm)
             if partner.country_id:
@@ -274,9 +280,11 @@ class StockPicking(orm.Model):
                 raise orm.except_orm('Error', msg)
             label = resp['value']
             if label['errorCode'] != 0:
-                raise orm.except_orm(
-                    _('Webservice Error'),
-                    ''.join(label['errorMessage']))
+                try:
+                    error = ''.join(label['errorMessage'])
+                except:
+                    error = str(label['errorCode'])
+                raise orm.except_orm('Webservice Error', error)
 
             # copy tracking number on picking if only one pack or
             # in tracking if several packs
